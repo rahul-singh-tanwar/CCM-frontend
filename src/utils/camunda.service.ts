@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable,  BehaviorSubject} from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CamundaService {
@@ -12,27 +12,28 @@ export class CamundaService {
     this.processIntanceKey.next(key);
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  async startProcess(payload: Object): Promise<Object> {
-    return this.http.post(`${this.baseUrl}/start-process`, payload);
+  startProcess(payload: Object): Observable<any> {
+    console.log('Starting process with payload:', payload);
+    return this.http.post(`${this.baseUrl}/start-process`, { payload });
   }
 
   searchUserTasks(): Observable<any> {
     return this.http.get(`${this.baseUrl}/searchUserTasks`);
   }
 
-  completeUserTask(userTaskKey: string, variables: any) :Observable<any>{
+  completeUserTask(userTaskKey: string, variables: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/complete-user-task`, {
-        userTaskKey: userTaskKey,
-        variables: variables,
+      userTaskKey: userTaskKey,
+      variables: variables,
     });
-    }
+  }
 
   getUserTaskByProcessInstance(processInstanceId: string, name: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/user-tasks/search`, {
       processInstanceKey: processInstanceId, name: name
-      
-     });
-    }
+
+    });
+  }
 }
