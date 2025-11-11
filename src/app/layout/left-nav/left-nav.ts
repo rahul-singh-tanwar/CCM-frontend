@@ -14,7 +14,9 @@ import { stratProccess } from '../../../utils/searchService';
 export class LeftNav {
    @Input() collapsed = false;
 
-   constructor(private router: Router) {}
+   constructor(private router: Router ) {
+    
+   }
 
 
   navigateTo(route: string) {
@@ -22,8 +24,8 @@ export class LeftNav {
     this.router.navigate([route]);
     
     const payload = {
-      processDefinitionId: "",
-      processDefinitionVersion: "",
+      processDefinitionId: 'PreArrangementProcess',
+      processDefinitionVersion: -1,
       variables: {}
     }
 

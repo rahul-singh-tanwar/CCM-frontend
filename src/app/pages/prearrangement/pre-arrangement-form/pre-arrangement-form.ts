@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule  } from '@angul
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute  } from '@angular/router'; 
 import {searchApi} from '../../../../utils/searchService';
+import { CamundaService } from '../../../../utils/camunda.service';
 
 @Component({
   selector: 'app-pre-arrangement-form',
@@ -14,6 +15,9 @@ export class PreArrangementForm implements OnInit{
 
   form: FormGroup;
   departmentValue: 'IPD' | 'OPD' = 'IPD';
+  taskname = '';
+  processInstanceId = '2251799814227796';
+  userTaskKey = '';
 
   @Input() set department(value: 'IPD' | 'OPD') {
     if (value) this.onDepartmentChange(value);
@@ -22,7 +26,8 @@ export class PreArrangementForm implements OnInit{
 
   constructor(
     private fb: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private camundaService: CamundaService
   ) {
     this.form = this.fb.group({
       nationalId: [''],
@@ -70,6 +75,7 @@ export class PreArrangementForm implements OnInit{
 
   submitForm() {
     this.form.markAllAsTouched();
+    this.taskname = 'Search Customer Info';
 
     if (this.form.valid) {
       console.log('Form Values:', this.form.value);
@@ -113,12 +119,52 @@ export class PreArrangementForm implements OnInit{
         },
       };
 
-        searchApi(body).then((response) => {
+      this.camundaService.getUserTaskByProcessInstance(this.processInstanceId, this.taskname)
+        .subscribe({
+           next: (res) => {
+             this.userTaskKey = res.userTaskKey;                          
+          },
+          error: (err) => {
+            console.error('Error fetching user task:', err);
+          //  this.message = 'Failed to fetch user task';
+          }
+        });
+
+        const variables = {customerInfo: {
+          nationalId: fv.nationalId || '',
+          policyNumber: fv.policyNumber || '',
+        },
+        visitInfo: {
+          visitType: fv.visitType || '',
+          reservationType: fv.reservationType || '',
+          HospitalName: fv.hospitalName || '',
+          ICD10: fv.icd10 || '',
+          ICD9: fv.icd9 || '',
+          AdmissionDate: fv.admissionDate || '',
+          AccidentDate: fv.accidentDate || '',
+        }
+      };
+
+       this.userTaskKey = this.userTaskKey;
+       console.log("user task Key ", this.userTaskKey);
+         // Complete user task
+       this.camundaService.completeUserTask(this.userTaskKey, variables).subscribe({
+  next: () => {
+    console.log('✅ Task completed successfully');
+  },
+  error: (err) => {
+    console.error('❌ Error completing task:', err);
+  },
+});
+
+     
+      /*  searchApi(body).then((response) => {
             console.log('API Response:', response);
             this.formSubmitted.emit(response);  
         }).catch((error) => {
             console.error('API Error:', error);
         });
+        */
         
 
       } else {

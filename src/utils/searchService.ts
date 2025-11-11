@@ -5,7 +5,7 @@ const KEYCLOAK_TOKEN_URL =
 const CLIENT_ID = "orchestration";
 const CLIENT_SECRET = "secret";
 
-const BaseURL = "http://localhost:8088/"; // Camunda 8 REST API
+const BaseURL = "http://localhost:3000"; // Camunda 8 REST API
 
 // ===== Get access token from Keycloak =====
 async function getAccessToken(): Promise<string> {
@@ -20,6 +20,7 @@ async function getAccessToken(): Promise<string> {
 
     return data.access_token;
 }
+
 
 
 export async function searchApi(payload: Object): Promise<Object | undefined> {
@@ -48,7 +49,7 @@ export async function stratProccess(payload: Object): Promise<Object | undefined
         const token = await getAccessToken();
 
 
-        const API_URL = BaseURL + "v2/start-process";
+        const API_URL = BaseURL + "/start-process";
 
         const { data } = await axios.post(API_URL, payload, {
             headers: {
