@@ -1,45 +1,42 @@
 :host {
   display: block;
   max-height: 90vh;
-  padding: 40px;
-  overflow-y: auto;
   box-sizing: border-box;
+  padding: 0; /* remove padding from host to avoid extra scroll */
 }
 
-/* === Dialog Container Styling === */
+/* Dialog Container Styling */
 ::ng-deep .mat-mdc-dialog-container {
-  /* border-radius: 12px !important; */
   overflow: hidden !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
 }
 
-/* === Title Section === */
+/* Title */
 h2[mat-dialog-title] {
   font-size: 22px;
   font-weight: 600;
   color: #0d47a1;
-  padding: 24px 32px 16px 32px; /* ↑ increased padding */
-  margin: 0;
+  padding: 20px 32px;
   border-bottom: 1px solid #e0e0e0;
   background-color: #f9f9f9;
+  margin: 0;
 }
 
-/* === Content === */
+/* Content Area */
 .mat-dialog-content {
-  padding: 32px; /* ↑ more padding for content */
-  background-color: #fff;
-  max-height: calc(90vh - 120px);
+  padding: 32px;
+  max-height: calc(90vh - 120px); /* header + footer */
   overflow-y: auto;
+  background-color: #fff;
   box-sizing: border-box;
-  /* border-radius: 0 0 12px 12px; */
 }
 
 /* Policy Info Grid */
 .policy-info {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px 32px; /* ↑ larger gaps between items */
-  margin-bottom: 32px; /* ↑ spacing below policy info */
+  gap: 16px 32px;
+  margin-bottom: 32px;
 }
 
 .policy-info p {
@@ -57,18 +54,17 @@ h3 {
   font-size: 16px;
   font-weight: 600;
   color: #1e3a8a;
-  margin: 32px 0 16px 0; /* ↑ spacing above and below headers */
+  margin: 32px 0 16px;
   border-left: 4px solid #1976d2;
-  padding-left: 12px; /* ↑ more padding from border */
+  padding-left: 12px;
 }
 
 /* Benefits Table */
 .table-wrapper {
   border: 1px solid #e0e0e0;
-  /* border-radius: 8px; slightly larger radius */
   overflow: hidden;
   background: #fff;
-  margin-bottom: 24px; /* spacing below table */
+  margin-bottom: 24px;
 }
 
 .inner-table {
@@ -77,32 +73,40 @@ h3 {
   font-size: 14px;
 }
 
-.inner-table th {
-  background-color: #f3f6fb;
-  color: #333;
-  font-weight: 600;
-  padding: 12px 16px; /* ↑ more padding */
-  text-align: left;
-  border-bottom: 1px solid #e0e0e0;
+.inner-table th, .inner-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
 }
 
-.inner-table td {
-  padding: 12px 16px; /* ↑ more padding for cells */
-  border-bottom: 1px solid #f0f0f0;
+.inner-table th {
+  background-color: #f3f6fb;
+  font-weight: 600;
 }
 
 .inner-table tbody tr:hover {
   background-color: #f9fafc;
 }
 
+/* === Form Fields === */
+.full-width {
+  width: 100%;
+}
+
+.mat-form-field {
+  margin-bottom: 16px; /* spacing between fields */
+}
+
+.mat-form-field.mat-focused .mat-form-field-label {
+  color: #1976d2; /* focus color */
+}
+
 /* Upload Section */
 app-file-upload {
   display: block;
-  margin-bottom: 20px; /* ↑ spacing between upload blocks */
+  margin-bottom: 20px;
   background-color: #fafafa;
   border: 1px dashed #c5cae9;
-  /* border-radius: 8px; */
-  padding: 16px; /* ↑ more padding inside upload */
+  padding: 16px;
   transition: background-color 0.2s;
 }
 
@@ -114,35 +118,48 @@ app-file-upload:hover {
 hr {
   border: none;
   border-top: 1px solid #ddd;
-  margin: 32px 0; /* ↑ more spacing around hr */
+  margin: 32px 0;
 }
 
-/* === Footer Actions === */
+/* Footer Actions */
 .mat-dialog-actions {
   border-top: 1px solid #e0e0e0;
-  padding: 16px 32px; /* ↑ more padding */
+  padding: 16px 32px;
   background-color: #f9f9f9;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 12px; /* ↑ spacing between buttons */
+  gap: 12px;
   position: sticky;
   bottom: 0;
   z-index: 1;
 }
 
 /* Buttons */
-button[mat-stroked-button] {
-  text-transform: uppercase;
+button[mat-stroked-button], button[mat-raised-button] {
+  min-width: 120px; /* consistent width */
+  height: 40px;
   font-weight: 600;
   border-radius: 6px;
+  text-transform: uppercase;
+  padding: 0 16px;
+}
+
+button[mat-stroked-button] {
   color: #1976d2;
   border-color: #1976d2;
-  padding: 8px 20px; /* ↑ bigger clickable area */
-  transition: all 0.2s;
 }
 
 button[mat-stroked-button]:hover {
   background-color: #1976d2;
   color: white;
+}
+
+button[mat-raised-button] {
+  background-color: #1976d2;
+  color: white;
+}
+
+button[mat-raised-button]:hover {
+  background-color: #0d47a1;
 }

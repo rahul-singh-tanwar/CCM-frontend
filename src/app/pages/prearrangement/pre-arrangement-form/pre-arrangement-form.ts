@@ -88,7 +88,6 @@ export class PreArrangementForm implements OnInit {
       const fv = this.form.value;
       const processDefinitionId = (searchApi as any)?.processDefinitionId || 'variable need to inserted';
 
-
       const payload = {
         state: 'ASSIGNED',
         assignee: 'demo',
@@ -148,7 +147,13 @@ export class PreArrangementForm implements OnInit {
             // Complete user task
             this.camundaService.completeUserTask(this.userTaskKey, variables).subscribe({
               next: () => {
-                
+                  this.formSubmitted.emit({
+                    userTaskKey: this.userTaskKey,
+                    processInstanceKey: this.processInstanceKey,
+                    payload,
+                    variables
+                  });
+                  console.log('✅ Task completed and formSubmitted emitted');
               },
               error: (err) => {
                 console.error('❌ Error completing task:', err);

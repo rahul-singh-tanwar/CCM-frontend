@@ -13,20 +13,19 @@ import { ReviewPolicies } from './review-policies/review-policies';
 })
 export class Prearrangement {
   selectedDepartment: 'IPD' | 'OPD' = 'IPD';
-  showForm: boolean = false;
-  showReview: boolean = true;
+  showForm: boolean = true;
+  showReview: boolean = false;
   constructor(private router: Router) {}
 
   loadForm() {
     this.showForm = true;
     this.showReview = false;
-    // this.router.navigate(['/prearrangement/form'], { queryParams: { dept: this.selectedDepartment } });
-    // console.log('Loading Pre-Arrangement Form for', this.router);
   }
 
   loadReview() {
     this.showReview = true;
     this.showForm = false;
+    console.log("review loaded");
   }
 
   goBack() {
@@ -36,10 +35,18 @@ export class Prearrangement {
   onDepartmentChange(event: Event) {
     const input = event.target as HTMLInputElement;
     this.selectedDepartment = input.value as 'IPD' | 'OPD';
+
+    if(this.selectedDepartment == 'IPD'){
+      this.showForm = true;
+    }
+    else{
+      this.showForm = false;
+    }
   }
 
-  onFormSubmit(formValue: any) {
-    console.log('Form submitted from child:', formValue);
+  onFormSubmit(formValue: any) {    
+
+    console.log('Form submitted with value chils:', formValue);
     this.loadReview();
   }
 }

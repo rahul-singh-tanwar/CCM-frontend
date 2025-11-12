@@ -1,8 +1,8 @@
-<button *ngIf="showForm" type="button" class="back-btn" (click)="goBack()">
+<!-- <button *ngIf="showForm" type="button" class="back-btn" (click)="goBack()">
     <mat-icon>arrow_back</mat-icon> Go Back
-  </button>
+  </button> -->
 
-<div *ngIf="!showForm">
+<div *ngIf="!showReview">
 <label for="chk1">
   <input 
     type="radio" 
@@ -28,7 +28,7 @@
 </label>
 <br>
 
-<button type="button" (click)="loadForm()">Show selected</button>
+<!-- <button type="button" (click)="loadForm()">Show selected</button> -->
 </div> 
 <app-pre-arrangement-form 
   *ngIf="showForm"
@@ -36,7 +36,7 @@
   (formSubmitted)="onFormSubmit($event)">
 </app-pre-arrangement-form>
 <div *ngIf="showReview">
-  <button type="button" class="back-btn">
+  <button type="button" class="back-btn" (click)="loadForm()">
     <mat-icon>arrow_back</mat-icon> Go Back
   </button>
   <app-review-policies></app-review-policies>
