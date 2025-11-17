@@ -53,9 +53,13 @@ export class PolicyDetailsDialog {
     const payload = {
       physicianLicense: this.physicianLicense,
       simbAmount: this.simbAmount,
-      files: uploadedFiles,
-      policy: this.data
+      uplaodfiles: uploadedFiles,
+      // policy: this.data,
+      // policy_number: this.data.policyNumber
+      // policyAge: calculate from this.data.dateOfBirth
     };
+
+    // Policy number
 
     this.taskname = 'Upload Documents';
      this.camundaService.processIntanceKey$.subscribe(key => {
@@ -63,8 +67,6 @@ export class PolicyDetailsDialog {
         this.processInstanceKey = key;
       }
     });
-
-    
 
     // Get User task key and complete Task
      this.camundaService.getUserTaskByProcessInstance(this.processInstanceKey, this.taskname)
