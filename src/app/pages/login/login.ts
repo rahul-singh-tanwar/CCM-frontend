@@ -20,6 +20,13 @@ export class Login {
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  ngOnInit() {
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/prearrangement']);
+    }
+  }
+
+
   onLogin() {
     this.loading = true;
     this.errorMessage = '';
@@ -29,7 +36,7 @@ export class Login {
         console.log('Login successful:', res);
         localStorage.setItem('access_token', res);
 
-        this.loginSuccess.emit(res.access_token);
+        this.router.navigate(['/prearrangement']);
 
         this.loading = false;
       },

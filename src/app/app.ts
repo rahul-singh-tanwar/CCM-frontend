@@ -5,7 +5,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { LeftNav } from './layout/left-nav/left-nav';
-import { MainContent } from './layout/main-content/main-content';
 import { Login } from './pages/login/login';
 import { Router } from '@angular/router';
 import { AuthService } from '../utils/AuthService';
@@ -24,7 +23,6 @@ import { CommonModule } from '@angular/common';
     MatIconModule,
     RouterOutlet,
     LeftNav,
-    MainContent,
     Login,
  
   ],
@@ -42,11 +40,17 @@ export class App {
 
   constructor(private router: Router, private authService: AuthService) {}
 
-  username: string = '';
+  username: string = '' ;
   password: string = '';
 
   checkLoggedIn() {
-    return this.authService.isAuthenticated();
+    if(this.authService.isAuthenticated()) {
+      this.showLayout = true;
+      return true;
+    } else {
+      this.showLayout = false;
+      return false;
+    }
   }
 
   onUserLoggedIn(token: string) {

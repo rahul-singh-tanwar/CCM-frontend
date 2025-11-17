@@ -4,6 +4,8 @@ import {PreArrangementForm} from './pre-arrangement-form/pre-arrangement-form';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { ReviewPolicies } from './review-policies/review-policies';
+import { CamundaService } from '../../../utils/camunda.service';
+
 
 @Component({
   selector: 'app-prearrangement',
@@ -15,7 +17,29 @@ export class Prearrangement {
   selectedDepartment: 'IPD' | 'OPD' = 'IPD';
   showForm: boolean = true;
   showReview: boolean = false;
-  constructor(private router: Router) {}
+  constructor(private router: Router, private camundaService: CamundaService) {}
+
+  ngOnInit() {
+
+    const payload = {
+      processDefinitionId: 'PreArrangementProcess',
+      processDefinitionVersion: -1,
+      variables: {}
+    }
+    
+    this.camundaService.startProcess(payload)
+      .subscribe((response: any) => {
+
+        const processInstanceKey = response?.processInstanceKey;
+        this.camundaService.setProcessInstanceKey(processInstanceKey || '');
+        console.log('Process started successfully:', response);
+      }, error => {
+        console.error('Error starting process:', error);
+      }
+    );
+
+  }
+
 
   loadForm() {
     this.showForm = true;

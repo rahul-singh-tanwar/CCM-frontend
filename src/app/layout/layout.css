@@ -1,4 +1,4 @@
-/* :host {
+:host {
   display: block;
   height: 100vh;
 }
@@ -43,6 +43,5 @@
 .main-content {
   padding: 1rem;
   background: #fafafa;
-  height: calc(100vh - 64px); subtract toolbar height
   overflow-y: auto;
-} */
+}

@@ -5,14 +5,33 @@ const cors = require("cors");
 
 const multer = require("multer");
 const fs = require("fs");
-
-const upload = multer({ dest: "uploads/" });
-
+const path = require("path");
+const { v4: uuidv4 } = require("uuid");
+const uploadFolder = path.join(__dirname, "uploads");
+ 
+ 
 const app = express();
 app.use(express.json());
-app.use(cors()); // allow requests from frontend
+app.use(cors());
+app.use('/uploads', express.static(uploadFolder));
+
+//===================== File Upload Setup =====================//
 
 
+if (!fs.existsSync(uploadFolder)) {
+  fs.mkdirSync(uploadFolder);
+}
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, uploadFolder),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `${uuidv4()}${ext}`);
+  },
+});
+
+const upload = multer({ storage });
+ 
 // ===== Keycloak + Camunda Config =====
 const KEYCLOAK_TOKEN_URL =
   "http://localhost:18080/auth/realms/camunda-platform/protocol/openid-connect/token";
@@ -33,6 +52,28 @@ async function getAccessToken(req) {
 
   return token;
 }
+
+
+app.post('/upload', upload.array('files'), (req, res) => {
+  if (!req.files || req.files.length === 0) {
+    return res.status(400).json({ message: 'No files uploaded' });
+  }
+
+  // Return metadata for uploaded files
+  const uploadedFiles = req.files.map((file) => ({
+    originalName: file.originalname,
+    fileName: file.filename,
+    mimeType: file.mimetype,
+    size: file.size,
+    url: `/uploads/${file.filename}`, // endpoint to download later
+  }));
+
+  res.json({
+    message: 'Files uploaded successfully',
+    files: uploadedFiles,
+  });
+});
+
 
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
@@ -59,7 +100,6 @@ app.post("/login", async (req, res) => {
     res.status(401).json({ error: err.response?.data || "Invalid credentials" });
   }
 });
-
 
 
 // ===== API endpoint to start a Camunda process =====
@@ -429,8 +469,8 @@ app.get('/:userTaskKey/form', async (req, res) => {
   }
 });
 */
-
-
+ 
+ 
 app.get('/:userTaskKey/form', async (req, res) => {
   const { userTaskKey } = req.params;
 
@@ -496,72 +536,72 @@ app.get('/:userTaskKey/form', async (req, res) => {
 });
 
 //upload files
-app.post("/upload/:userTaskKey", upload.array("files"), async (req, res) => {
-  const { userTaskKey } = req.params;
+// app.post("/upload/:userTaskKey", upload.array("files"), async (req, res) => {
+//   const { userTaskKey } = req.params;
 
-  const token = await getAccessToken(req);
+//   const token = await getAccessToken(req);
 
-  if (!token) {
-    return res.status(401).json({ message: "Unauthorized: No access token provided" });
-  }
-
-  try {
-
-    // Convert uploaded files to base64 to store in memory (no document storage)
-    const uploadedFiles = req.files.map((file) => {
-      const fileBuffer = fs.readFileSync(file.path);
-      const base64Content = fileBuffer.toString("base64");
-
-      // Delete temp file to keep things clean
-      fs.unlinkSync(file.path);
-
-      return {
-        name: file.originalname,
-        mimeType: file.mimetype,
-        size: file.size,
-        content: base64Content,
-      };
-    });
-
-    // Build completion payload
-    const payload = {
-      action: "complete",
-      variables: {
-        uploadedFiles: {
-          value: JSON.stringify(uploadedFiles),
-          type: "String",
-        },
-      },
-    };
-
-    // Send to Camunda REST API
-    const camundaResponse = await axios.post(
-      `http://localhost:8088/v2/user-tasks/${userTaskKey}/completion`,
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    console.log("✅ Task completed with uploaded files:", uploadedFiles);
-    res.json({
-      message: "Task completed successfully with uploaded files",
-      uploadedFiles,
-      camundaResponse: camundaResponse.data,
-    });
-  } catch (err) {
-    console.error("❌ Failed to complete user task:", err.response?.data || err.message);
-    res.status(500).json({
-      error: "Failed to complete user task",
-      details: err.response?.data || err.message,
-    });
-  }
-});
-
-
+//   if (!token) {
+//     return res.status(401).json({ message: "Unauthorized: No access token provided" });
+//   }
+ 
+//   try {
+ 
+//     // Convert uploaded files to base64 to store in memory (no document storage)
+//     const uploadedFiles = req.files.map((file) => {
+//       const fileBuffer = fs.readFileSync(file.path);
+//       const base64Content = fileBuffer.toString("base64");
+ 
+//       // Delete temp file to keep things clean
+//       fs.unlinkSync(file.path);
+ 
+//       return {
+//         name: file.originalname,
+//         mimeType: file.mimetype,
+//         size: file.size,
+//         content: base64Content,
+//       };
+//     });
+ 
+//     // Build completion payload
+//     const payload = {
+//       action: "complete",
+//       variables: {
+//         uploadedFiles: {
+//           value: JSON.stringify(uploadedFiles),
+//           type: "String",
+//         },
+//       },
+//     };
+ 
+//     // Send to Camunda REST API
+//     const camundaResponse = await axios.post(
+//       `http://localhost:8088/v2/user-tasks/${userTaskKey}/completion`,
+//       payload,
+//       {
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//           "Content-Type": "application/json",
+//         },
+//       }
+//     );
+ 
+//     console.log("✅ Task completed with uploaded files:", uploadedFiles);
+//     res.json({
+//       message: "Task completed successfully with uploaded files",
+//       uploadedFiles,
+//       camundaResponse: camundaResponse.data,
+//     });
+//   } catch (err) {
+//     console.error("❌ Failed to complete user task:", err.response?.data || err.message);
+//     res.status(500).json({
+//       error: "Failed to complete user task",
+//       details: err.response?.data || err.message,
+//     });
+//   }
+// });
+ 
+ 
 // Download file stored in user task variables
 app.get('/download/:userTaskKey/:variableName', async (req, res) => {
   const { userTaskKey, variableName } = req.params;
@@ -619,6 +659,8 @@ app.get('/download/:userTaskKey/:variableName', async (req, res) => {
 });
 
 
+ 
+ 
 // ===== Start server =====
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Backend running at http://localhost:${PORT}`));
