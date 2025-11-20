@@ -47,7 +47,7 @@ zbc.createWorker({
     console.log(`🎯 Generated preArrangNumber: ${randomNum}`);
 
     // Complete the job and pass variable to Camunda
-    await job.complete({ preArrangNumber: randomNum });
+    await job.complete({ preArrangNumber: randomNum ,gopNumber: randomNum});
   },
 });
 
