@@ -24,7 +24,7 @@ export class Prearrangement {
     const payload = {
       processDefinitionId: 'PreArrangementProcess',
       processDefinitionVersion: -1,
-      variables: {}
+      variables: {initiator: localStorage.getItem('username') || 'demo'}
     }
     
     this.camundaService.startProcess(payload)

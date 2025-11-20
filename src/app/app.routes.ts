@@ -8,6 +8,7 @@ import { Login } from './pages/login/login';
 import { ReviewPolicies } from './pages/prearrangement/review-policies/review-policies';
 import { IframeView } from './pages/iframe-view/iframe-view'; 
 import { UserTasksComponent } from './pages/prearrangement/user-tasks/user-tasks';
+import { GopDocument } from './pages/gop-document/gop-document';
 import { Layout } from './layout/layout';
 import { AuthGuard } from '../utils/auth.guard';
 
@@ -35,11 +36,12 @@ export const routes: Routes = [
         { path: 'review-policies', component: ReviewPolicies },
         { path: 'prearrangement', component: Prearrangement },
         { path: 'team-performance', component: TeamPerformance },
-        { path: 'process-performance', component: ProcessPerformance },
+        { path: 'process-performance', component: IframeView },
         { path: 'admin-console', component: AdminConsole },
         { path: 'prearrangement/form', component: PreArrangementForm },
         { path: 'iframe', component: IframeView },
         { path: 'user-tasks', component: UserTasksComponent },
+        { path: 'gop-document', component: GopDocument },
       ]
     },
 
