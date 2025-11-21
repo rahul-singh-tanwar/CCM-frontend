@@ -5,14 +5,16 @@ export interface Benefit {
 }
 
 export interface PolicyEntry {
-  // companyName: string;
-  // policyType: string;
-  // policyNumber: string;
-  // policyStatus?: string;
-  // effectiveDate?: string;
-  // expiryDate?: string;
-  // firstUseDate?: string;
   benefits?: Benefit[];
+}
+
+export interface selectedPackage {
+    Name: String;
+    icdMatch: String;
+    network:  String;
+    simbMatch: number;
+    packagePrice: number;
+    standardTariff: number;
 }
 
 export interface UploadedDoc {
@@ -44,6 +46,7 @@ export interface VisitInfo {
 }
 
 export interface ReadonlyPopupData {
+  userTaskKey?: string;
   eligiblePolicies?: Array<{
     companyName: string;
     policyType: string;
@@ -57,5 +60,9 @@ export interface ReadonlyPopupData {
   visitInfo?: VisitInfo;
   prearengment?: string;
   physicianLicenceNumber?: string;
-  silbmAmount?: string; // SIBM amount (kept string to allow currency symbols)
+  silbmAmount?: string;
+  lengthOfStay?: number;
+  averageCost?: number;
+  diseaseDetails?: string;
+  selectedPackage?: selectedPackage;
 }

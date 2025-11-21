@@ -129,6 +129,7 @@ export class UserTasksComponent implements OnInit, OnDestroy {
 
         // Prepare the dialog data to match CcmWorkDTO.ReadonlyPopupData
         const dialogData: CcmWorkDTO.ReadonlyPopupData = {
+            userTaskKey: this.selectedTask.userTaskKey || '',
             eligiblePolicies,
             benefits,
 
@@ -155,13 +156,19 @@ export class UserTasksComponent implements OnInit, OnDestroy {
             prearengment: varsMap.preArrangNumber || "",
             physicianLicenceNumber:
                 varsMap.physicianNumber || varsMap.physicianLicense || "",
-            silbmAmount: varsMap.simbAmount || ""
+            silbmAmount: varsMap.simbAmount || "",
+            lengthOfStay: varsMap.lengthOfStay || 0,
+            averageCost: varsMap.averageCost || 0,
+            diseaseDetails: varsMap.diseaseDetails || "",
+            selectedPackage: varsMap.selectedPackage || undefined
         };
 
-        // Open dialog
         const dialogRef = this.dialog.open(CcmWorkQueue, {
-            width: "900px",
-            maxHeight: "90vh",
+            width: "80vw",        // adjust as needed
+            height: "80vh",      // full height only
+            maxHeight: "100vh",
+            maxWidth: '90vw',
+            panelClass: "workqueue-dialog",
             data: dialogData
         });
 

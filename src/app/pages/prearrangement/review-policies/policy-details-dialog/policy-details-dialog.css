@@ -194,3 +194,86 @@ button[mat-raised-button]:hover {
   line-height: 1;
   color: #1976d2;
 }
+
+/* Package selection box */
+.package-selector {
+  grid-column: 1 / -1;
+  margin-bottom: 12px;
+  border: 1px solid #1976d2;
+  border-radius: 6px;
+  padding: 16px;
+  background: #f5f8fd;
+}
+
+.package-label {
+  font-weight: 600;
+  color: #1976d2;
+  font-size: 1.1em;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.package-radio {
+  margin-right: 20px;
+}
+
+/* Error highlight */
+.package-error {
+  border: 2px solid #d32f2f !important;
+  background: #fff0f0 !important;
+}
+
+.error-text {
+  color: #d32f2f;
+  font-size: 0.95em;
+  margin-top: 4px;
+}
+
+/* PACKAGE DETAILS CARD */
+.package-details-card {
+  border: 1px solid #d0d7e5;
+  background: #fafcff;
+  border-radius: 8px;
+  padding: 18px 20px;
+  margin-top: 10px;
+  box-shadow: 0px 3px 10px rgba(0,0,0,0.06);
+}
+
+.details-header {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0d47a1;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.bullet-list {
+  padding-left: 18px;
+  margin: 0 0 12px 0;
+}
+
+.bullet-list li {
+  margin-bottom: 4px;
+}
+
+.divider {
+  border-top: 1px solid #d0d7e5;
+  margin: 12px 0;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 4px 0;
+  font-size: 15px;
+}
+
+.savings {
+  font-weight: 600;
+  color: #2e7d32;
+}

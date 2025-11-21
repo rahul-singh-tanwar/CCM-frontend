@@ -29,14 +29,33 @@ export class PolicyDetailsDialog {
   lengthOfStay: number | null = null;
   diseaseDetails: string = '';
 
-  selectedPackage: string = '';
+  selectedPackage: any = null;
   packageList = [
-    { Name: 'Basic Care' },
-    { Name: 'Standard Health' },
-    { Name: 'Premium Plus' },
-    { Name: 'Family Secure' },
-    { Name: 'Executive Wellness' }
+    {
+      Name: "Appendectomy Standard 3D2N",
+      icdMatch: "K35",
+      network: "Gold network hospitals",
+      simbMatch: 80,
+      packagePrice: 45000,
+      standardTariff: 62000
+    },
+    {
+      Name: "Appendectomy Premium 3D2N",
+      icdMatch: "K35",
+      network: "Platinum network",
+      simbMatch: 90,
+      packagePrice: 56000,
+      standardTariff: 72000
+    }
   ];
+
+  ngOnInit() {
+    // After packageList is populated:
+    if (this.packageList?.length && !this.selectedPackage) {
+      this.selectedPackage = this.packageList[0]; // default select
+    }
+  }
+
 
   @ViewChild('labFiles') labFiles!: FileUpload;
   @ViewChild('formFiles') formFiles!: FileUpload;
@@ -51,6 +70,8 @@ export class PolicyDetailsDialog {
     private dialog: MatDialog,
     private router: Router
   ) { }
+  
+ 
 
   close() {
     this.dialog.closeAll();
@@ -99,7 +120,7 @@ export class PolicyDetailsDialog {
           averageCost: this.averageCost,
           lengthOfStay: this.lengthOfStay,
           diseaseDetails: this.diseaseDetails,
-          selectedPackage: { Name: this.selectedPackage },
+          selectedPackage: this.selectedPackage,
           uploadFiles: uploadedFiles,
           policyAge: this.getDateDifference(
             new Date(this.data.effectiveDate),
