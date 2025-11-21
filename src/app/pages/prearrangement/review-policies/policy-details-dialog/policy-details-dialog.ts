@@ -76,6 +76,7 @@ export class PolicyDetailsDialog {
         variables = {
           physicianNumber: this.physicianLicense,
           selectedPolicyNumber: this.data.policyNumber,
+          eligibilityResults: this.data,
           simbAmount: this.simbAmount,
           uploadFiles: uploadedFiles,
           policyAge: this.getDateDifference(

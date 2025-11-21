@@ -31,42 +31,33 @@
   </section>
 
   <!-- === Benefits === -->
-  <section class="section">
+    <section class="section">
     <h3>Benefits</h3>
-    <div *ngIf="data.benefits?.length; else noBenefits">
-      <div class="benefit-block" *ngFor="let ben of data.benefits">
-        <h4>{{ ben.companyName }} — {{ ben.policyType }} ({{ ben.policyNumber }})</h4>
-        <div class="benefit-meta">
-          <p><strong>Status:</strong> {{ ben.policyStatus || '-' }}</p>
-          <p><strong>Effective:</strong> {{ ben.effectiveDate || '-' }}</p>
-          <p><strong>Expiry:</strong> {{ ben.expiryDate || '-' }}</p>
-          <p><strong>First Use:</strong> {{ ben.firstUseDate || '-' }}</p>
+
+    <div *ngIf="(data?.benefits?.length || 0) > 0; else noBenefits">
+      <div class="benefit-card" *ngFor="let ben of data?.benefits">
+        <div class="benefit-row">
+          <span class="label">Benefit Name:</span>
+          <span class="value">{{ ben?.name }}</span>
         </div>
-        <table class="simple-table inner-table" *ngIf="ben.benefits?.length; else emptyBen">
-          <thead>
-            <tr>
-              <th>Benefit Name</th>
-              <th>Limit</th>
-              <th>Remarks</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let b of ben.benefits">
-              <td>{{ b.name }}</td>
-              <td>{{ b.limit }}</td>
-              <td>{{ b.remarks || '-' }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <ng-template #emptyBen>
-          <p class="muted">No benefits listed.</p>
-        </ng-template>
+        <div class="benefit-row">
+          <span class="label">Limit:</span>
+          <span class="value">{{ ben?.limit }}</span>
+        </div>
+        <div class="benefit-row">
+          <span class="label">Remarks:</span>
+          <span class="value">{{ ben?.remarks || '-' }}</span>
+        </div>
+        <hr />
       </div>
     </div>
+
     <ng-template #noBenefits>
       <p class="muted">No benefit records found.</p>
     </ng-template>
   </section>
+
+
 
   <!-- === Uploaded Documents === -->
   <section class="section">
@@ -103,7 +94,7 @@
     <div>
       <h3>Customer Information</h3>
       <p><strong>National ID:</strong> {{ data.customerInfo?.nationalId || '-' }}</p>
-      <p><strong>Policy Number:</strong> {{ data.customerInfo?.policyNumber || '-' }}</p>
+      <!-- <p><strong>Policy Number:</strong> {{ data.customerInfo?.policyNumber || '-' }}</p> -->
     </div>
     <div>
       <h3>Visit Information</h3>
@@ -120,7 +111,7 @@
   <section class="section">
     <p><strong>Pre-arrangement:</strong> {{ data.prearengment || '-' }}</p>
     <p><strong>Physician License Number:</strong> {{ data.physicianLicenceNumber || '-' }}</p>
-    <p><strong>SIBM Amount:</strong> {{ data.silbmAmount || '-' }}</p>
+    <p><strong>SIMB Amount:</strong> {{ data.silbmAmount || '-' }}</p>
   </section>
 
 </div>

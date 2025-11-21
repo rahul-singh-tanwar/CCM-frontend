@@ -111,28 +111,21 @@ export class UserTasksComponent implements OnInit, OnDestroy {
         console.log("Mapped Variables:", varsMap);
 
         // Extract eligibility results safely
-        const eligibilityResults = varsMap.eligibilityResults || [];
+        const eligibilityResults = varsMap.eligibilityResults || {};
 
         // Build eligiblePolicies
-        const eligiblePolicies = eligibilityResults.map((item: any) => ({
-            companyName: item.companyName,
-            policyType: item.policyType,
-            policyNumber: item.policies?.policyNumber,
-            effectiveDate: item.policies?.effectiveDate,
-            expiryDate: item.policies?.expiryDate
-        }));
+        const eligiblePolicies = [{
+            companyName: eligibilityResults.companyName,
+            policyType: eligibilityResults.policyType,
+            policyNumber: eligibilityResults.policyNumber,
+            effectiveDate: eligibilityResults.effectiveDate,
+            expiryDate: eligibilityResults.expiryDate
+        }];
 
         // Build benefits structure
-        const benefits = eligibilityResults.map((item: any) => ({
-            companyName: item.companyName,
-            policyType: item.policyType,
-            policyNumber: item.policies?.policyNumber,
-            policyStatus: item.policies?.policyStatus,
-            effectiveDate: item.policies?.effectiveDate,
-            expiryDate: item.policies?.expiryDate,
-            firstUseDate: item.policies?.firstUseDate,
-            benefits: item.policies?.benefits || []
-        }));
+        const selectedPolicyNumber = varsMap.selectedPolicyNumber;
+        
+        const benefits = eligibilityResults.benefits || [];
 
         // Prepare the dialog data to match CcmWorkDTO.ReadonlyPopupData
         const dialogData: CcmWorkDTO.ReadonlyPopupData = {
@@ -140,9 +133,9 @@ export class UserTasksComponent implements OnInit, OnDestroy {
             benefits,
 
             uploadedDocuments: {
-                formFiles: varsMap.uplaodfiles?.formFiles || [],
-                labFiles: varsMap.uplaodfiles?.labFiles || [],
-                otherFiles: varsMap.uplaodfiles?.otherFiles || []
+                formFiles: varsMap.uploadFiles?.formFiles || [],
+                labFiles: varsMap.uploadFiles?.labFiles || [],
+                otherFiles: varsMap.uploadFiles?.otherFiles || []
             },
 
             customerInfo: {
@@ -240,6 +233,7 @@ export class UserTasksComponent implements OnInit, OnDestroy {
                 this.processNames = [
                     ...new Set(this.tasks.map(t => t.processName).filter(Boolean))
                 ];
+
 
                 // Re-apply table binding
                 this.applyFilters();

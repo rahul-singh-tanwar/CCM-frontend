@@ -5,13 +5,13 @@ export interface Benefit {
 }
 
 export interface PolicyEntry {
-  companyName: string;
-  policyType: string;
-  policyNumber: string;
-  policyStatus?: string;
-  effectiveDate?: string;
-  expiryDate?: string;
-  firstUseDate?: string;
+  // companyName: string;
+  // policyType: string;
+  // policyNumber: string;
+  // policyStatus?: string;
+  // effectiveDate?: string;
+  // expiryDate?: string;
+  // firstUseDate?: string;
   benefits?: Benefit[];
 }
 
@@ -51,7 +51,7 @@ export interface ReadonlyPopupData {
     effectiveDate?: string;
     expiryDate?: string;
   }>;
-  benefits?: PolicyEntry[]; // table of benefit entries (as provided in the prompt)
+  benefits?: Benefit[]; // table of benefit entries (as provided in the prompt)
   uploadedDocuments?: UploadedFilesCategories;
   customerInfo?: CustomerInfo;
   visitInfo?: VisitInfo;
