@@ -4,7 +4,7 @@
 
   <!-- === Eligible Policies === -->
   <section class="section">
-    <h3>Seleced Policiy</h3>
+    <h3>Selected Policy</h3>
     <table class="simple-table" *ngIf="data.eligiblePolicies?.length; else noPolicies">
       <thead>
         <tr>
@@ -209,12 +209,12 @@
 
   </form>
 </section>
-
-</div>
-
-<mat-dialog-actions align="end">
+<mat-dialog-actions align="end" class="dialog-actions">
   <button mat-stroked-button (click)="close()">Close</button>
   <button mat-raised-button color="primary" (click)="onSubmit()">
     Submit
   </button>
 </mat-dialog-actions>
+
+</div>
+
